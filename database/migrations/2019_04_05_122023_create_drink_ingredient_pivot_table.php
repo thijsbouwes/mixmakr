@@ -15,17 +15,17 @@ class CreateDrinkIngredientPivotTable extends Migration
     {
         Schema::create('drink_ingredient', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('drink_id');
             $table->unsignedBigInteger('ingredient_id');
-            $table->unsignedBigInteger('machine_id');
 
             $table->foreign('ingredient_id')
                 ->references('id')
                 ->on('ingredients')
                 ->onDelete('cascade');
 
-            $table->foreign('machine_id')
+            $table->foreign('drink_id')
                 ->references('id')
-                ->on('machines')
+                ->on('drinks')
                 ->onDelete('cascade');
 
             $table->integer('amount');
