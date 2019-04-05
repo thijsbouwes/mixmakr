@@ -11293,6 +11293,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -11300,11 +11306,17 @@ __webpack_require__.r(__webpack_exports__);
       register: false,
       user: {
         name: "",
+        date_of_birth: "",
         email: "",
         password: "",
         password_confirmation: ""
       }
     };
+  },
+  computed: {
+    dateEighteenYears: function dateEighteenYears() {
+      return this.$moment().subtract(18, 'years').format('Y-MM-DD');
+    }
   },
   methods: {
     doSubmit: function doSubmit() {
@@ -30054,6 +30066,48 @@ var render = function() {
                       return
                     }
                     _vm.$set(_vm.user, "name", $event.target.value)
+                  }
+                }
+              })
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.register
+          ? _c("div", { staticClass: "mb-4" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "block text-grey-darker text-sm font-bold mb-2",
+                  attrs: { for: "name" }
+                },
+                [_vm._v("\n                Date of Birth\n            ")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.user.date_of_birth,
+                    expression: "user.date_of_birth"
+                  }
+                ],
+                staticClass:
+                  "shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker leading-tight focus:outline-none focus:shadow-outline",
+                attrs: {
+                  id: "date_of_birth",
+                  type: "date",
+                  placeholder: "Name",
+                  required: "",
+                  max: _vm.dateEighteenYears
+                },
+                domProps: { value: _vm.user.date_of_birth },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.user, "date_of_birth", $event.target.value)
                   }
                 }
               })

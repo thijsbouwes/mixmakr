@@ -7,6 +7,12 @@
                 </label>
                 <input v-model="user.name" class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Name" required maxlength="255">
             </div>
+            <div class="mb-4" v-if="register">
+                <label class="block text-grey-darker text-sm font-bold mb-2" for="name">
+                    Date of Birth
+                </label>
+                <input v-model="user.date_of_birth" class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker leading-tight focus:outline-none focus:shadow-outline" id="date_of_birth" type="date" placeholder="Name" required :max="dateEighteenYears">
+            </div>
             <div class="mb-4">
                 <label class="block text-grey-darker text-sm font-bold mb-2" for="email">
                     Email
@@ -46,10 +52,17 @@
                 register: false,
                 user: {
                     name: "",
+                    date_of_birth: "",
                     email: "",
                     password: "",
                     password_confirmation: ""
                 }
+            }
+        },
+
+        computed: {
+            dateEighteenYears() {
+                return this.$moment().subtract(18, 'years').format('Y-MM-DD');
             }
         },
 
