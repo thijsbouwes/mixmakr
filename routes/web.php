@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::view('/{vue?}', 'index')
+    ->name('index')
+    ->where('vue', '[\/\w\.-]*');

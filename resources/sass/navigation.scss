@@ -1,0 +1,15 @@
+nav {
+    &.scrolled {
+        @apply bg-white shadow;
+    }
+    &.scrolled button {
+        @extend .gradient;
+        @apply text-white;
+    }
+    &.scrolled button:hover {
+        @apply text-white;
+    }
+    &.scrolled a {
+        @apply text-grey-darkest;
+    }
+}
