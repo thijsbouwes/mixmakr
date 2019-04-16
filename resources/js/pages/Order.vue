@@ -1,5 +1,5 @@
 <template>
-    <layout>
+    <layout :minimalistLayout="true">
 
         <div class="pt-16"></div>
 
@@ -28,43 +28,79 @@
                     <div class="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
                 </div>
 
-                <login v-if="step === 0"></login>
-
-                <products v-if="step === 1"></products>
-
-            </div>
-            <div class="mx-auto flex pt-4 justify-around">
-                <button @click="step--" class="gradient hover:underline hover:bg-blue-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-                    Previous
-                </button>
-                <button @click="step++" class="gradient hover:underline hover:bg-blue-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-                    Next
-                </button>
+                <login v-if="step === 0" @loggedInUser="processLoggedInUser"></login>
+                <shop v-show="step === 1" @order="processOrder" @location="processLocation"></shop>
+                <confirmation v-if="step === 2" @back="back" @confirm="confirm" :cart="cart"></confirmation>
+                <order-status v-if="step === 3" :orderId="orderId"></order-status>
             </div>
         </section>
-
-
     </layout>
 </template>
 
 <script>
     import Login from '../components/Login';
-    import Products from '../components/Products';
+    import Shop from '../components/Shop';
+    import OrderStatus from '../components/OrderStatus';
+    import Confirmation from '../components/Confirmation';
     import Layout from "../layouts/Layout";
     import Progress from '../components/Progress';
+    import {ENDPOINTS} from "../config/api";
 
     export default {
-        components: {Products, Layout, Login, Progress},
+        components: {Shop, Layout, Login, Progress, Confirmation, OrderStatus},
         data() {
             return {
+                location: null,
+                orderId: null,
+                cart: [],
                 step: 0,
-                steps: ['Login', 'Drinks', 'Confirmation', 'Order complete']
+                steps: ['Login', 'Drinks', 'Confirmation', 'Order status']
+            }
+        },
+
+        created() {
+            if (this.$route.params.id) {
+                this.orderId = parseInt(this.$route.params.id);
+                this.step = 3;
             }
         },
 
         computed: {
             stepName() {
                 return this.steps[this.step];
+            }
+        },
+
+        methods: {
+            processOrder(products) {
+                this.cart = products;
+                this.step++;
+            },
+
+            processLocation(location) {
+                this.location = location;
+            },
+
+            processLoggedInUser() {
+                this.step++;
+            },
+
+            confirm() {
+                console.log("redirect to ideal");
+                let data = {
+                    machine_id: this.location,
+                    drinks: this.cart
+                };
+
+                this.$http.post(ENDPOINTS.ORDERS, data)
+                    .then(response => {
+                        // Redirect
+                        window.location.replace(ENDPOINTS.ORDERS + '/' + response.data.id + '/start-payment')
+                    })
+            },
+
+            back() {
+                this.step--;
             }
         }
     }

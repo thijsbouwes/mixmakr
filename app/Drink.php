@@ -16,7 +16,9 @@ class Drink extends Model
     {
         return $this->belongsToMany(Order::class)
             ->withPivot([
-                'status'
+                'status',
+                'quantity',
+                'quantity_complete'
             ]);
     }
 

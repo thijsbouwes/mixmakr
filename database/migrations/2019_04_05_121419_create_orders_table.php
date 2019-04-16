@@ -18,9 +18,8 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('machine_id');
             $table->decimal('price');
-            $table->enum('status', ['waiting_for_payment', 'creating', 'completed'])->default('waiting_for_payment');
-            $table->string('payment_external_id');
-            $table->enum('payment_status', ['pending', 'accepted', 'cancelled'])->default('pending');
+            $table->enum('status', ['waiting_for_payment', 'pending', 'creating', 'completed'])->default('waiting_for_payment');
+            $table->string('payment_external_id')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')

@@ -5,8 +5,14 @@ import moment from 'moment';
 let authRefreshTokenRequest;
 
 class AuthService {
-    login(email, password) {
-        let data = {username: email, password, grant_type: 'password'};
+    login(username, password) {
+        let data = {
+            username,
+            password,
+            grant_type: 'password',
+            client_id: process.env.MIX_CLIENT_ID,
+            client_secret: process.env.MIX_CLIENT_SECRET
+        };
 
         // Login
         return request.post(ENDPOINTS.LOGIN, data)
@@ -19,9 +25,7 @@ class AuthService {
             });
     }
 
-    register(name, email, password, password_confirmation) {
-        let data = {name, email, password, password_confirmation};
-
+    register(data) {
         // Register
         return request.post(ENDPOINTS.REGISTER, data)
             .then(response => {

@@ -30,7 +30,7 @@ axios.interceptors.response.use(null, (error) => {
             })
             .catch(error => {
                 Auth.logout();
-                router.push('/login');
+                router.push('/');
                 console.warn(error);
             });
     }

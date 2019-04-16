@@ -29,23 +29,11 @@ export const router = new Router({
             name: 'Order',
             component: Order
         },
-        // {
-        //     path: '',
-        //     meta: { requiresAuth: false },
-        //     component: Layout,
-        //     children: [
-        //         {
-        //             path     : '',
-        //             name     : 'account',
-        //             component: Dashboard
-        //         }
-        //     ]
-        // },
         {
-            path: '/login',
-            name: 'Login',
-            component: Login,
-            meta: { requiresGuest: true }
+            path: '/order/:id/status',
+            meta: { requiresAuth: false },
+            name: 'Order Status',
+            component: Order
         },
         {
             path: '*',
@@ -68,7 +56,7 @@ router.beforeEach((to, from, next) => {
 // Check auth
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth) && Auth.isLoggedIn() === false) {
-        next('/login');
+        next('/order');
     }
     next();
 });

@@ -84,16 +84,23 @@
 </template>
 
 <script>
-    import { PRODUCTS } from "../config/products";
     import Layout from "../layouts/Layout";
+    import {ENDPOINTS} from "../config/api";
 
     export default {
         components: { Layout },
 
         data() {
             return {
-                products: PRODUCTS
+                products: []
             }
+        },
+
+        created() {
+            this.$http.get(ENDPOINTS.POPULAR_PRODUCTS)
+                .then(response => {
+                    this.products = response.data;
+                })
         }
     }
 </script>

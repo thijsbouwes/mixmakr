@@ -13,10 +13,12 @@ class CreateDrinkOrderPivotTable extends Migration
      */
     public function up()
     {
-        Schema::create('drink_order_pivot', function (Blueprint $table) {
+        Schema::create('drink_order', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('drink_id');
             $table->unsignedBigInteger('order_id');
+            $table->unsignedInteger('quantity');
+            $table->unsignedInteger('quantity_complete')->nullable();
 
             $table->foreign('drink_id')
                 ->references('id')

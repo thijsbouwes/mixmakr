@@ -8,22 +8,18 @@ class Order extends Model
 {
     const STATUS = [
         'waiting_for_payment',
-        'creating',
-        'completed'
-    ];
-
-    const PAYMENT_STATUS = [
         'pending',
-        'accepted',
+        'creating',
+        'completed',
         'cancelled'
     ];
 
     protected $fillable = [
         'price',
         'status',
+        'machine_id',
         'user_id',
-        'payment_external_id',
-        'payment_status'
+        'payment_external_id'
     ];
 
     public function user()
@@ -40,7 +36,9 @@ class Order extends Model
     {
         return $this->belongsToMany(Drink::class)
             ->withPivot([
-                'status'
+                'status',
+                'quantity',
+                'quantity_complete'
             ]);
     }
 }

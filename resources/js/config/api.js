@@ -1,10 +1,13 @@
 export const ENDPOINTS = {
     BASE: process.env.MIX_API_URL,
     LOGIN: 'oauth/token',
-    REGISTER: 'user/register',
     LOGIN_REFRESH: 'oauth/token',
-    PRODUCTS: 'products',
-    USER: 'user'
+    REGISTER: 'users',
+    POPULAR_PRODUCTS: 'popular-drinks',
+    MACHINES: 'machines',
+    DRINKS: 'drinks',
+    ORDERS: 'orders',
+    USER: 'users/self'
 };
 
 export const HTTP_CODES = {

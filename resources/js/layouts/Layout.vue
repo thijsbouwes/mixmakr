@@ -1,14 +1,14 @@
 <template>
     <main class="main_content">
-        <navigation></navigation>
+        <navigation :minimalistLayout="minimalistLayout"></navigation>
 
         <!--<router-view></router-view>-->
         <slot></slot>
 
         <!--Footer-->
-        <img src="images/footer-hero.svg" alt="hero">
+        <img src="/images/footer-hero.svg" alt="hero">
 
-        <section class="container mx-auto text-center py-6 mb-12">
+        <section class="container mx-auto text-center py-6 mb-12" v-if="! minimalistLayout">
             <h1 class="w-full my-2 text-5xl font-bold leading-tight text-center text-white">Try it out now</h1>
             <div class="w-full mb-4">
                 <div class="h-1 mx-auto bg-white w-1/6 opacity-25 my-0 py-0 rounded-t"></div>
@@ -25,6 +25,12 @@
     import Navigation from './Navigation';
 
     export default {
-        components: { Navigation }
+        components: { Navigation },
+        props: {
+            minimalistLayout: {
+                type: Boolean,
+                default: false
+            }
+        }
     }
 </script>

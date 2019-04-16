@@ -31,6 +31,13 @@
                 </label>
                 <input v-model="user.password_confirmation" class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password_confirmation" type="password" placeholder="******************" required minlength="8" maxlength="255">
             </div>
+
+            <div class="mt-4 mb-6" v-if="loginError">
+                <div class="shadow appearance-none border border-red rounded py-3 px-4 text-grey-darker leading-tight">
+                    Email or password incorrect!
+                </div>
+            </div>
+
             <div class="flex items-center justify-between mt-2">
                 <button class="gradient hover:underline hover:bg-blue-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
                     {{ register ? "Register" : "Sign In" }}
@@ -50,6 +57,7 @@
         data() {
             return {
                 register: false,
+                loginError: false,
                 user: {
                     name: "",
                     date_of_birth: "",
@@ -66,23 +74,36 @@
             }
         },
 
+        created() {
+            if (Auth.isLoggedIn()) {
+                this.$emit('loggedInUser');
+            }
+        },
+
         methods: {
             doSubmit() {
-                Auth.register(this.user.name, this.user.email, this.user.password)
-                    .then(response => {
-                        // Login and redirect
-                        Auth.login(this.user.email, this.user.password)
-                            .then(response => {
-                                this.$router.push('/')
-                            })
-                            .catch(error => {
-                                Console.log("Error: " + error);
-                            })
+                if (this.register) {
+                    this.registerUser();
+                } else {
+                    this.loginUser();
+                }
+            },
 
+            registerUser() {
+                Auth.register(this.user)
+                    .then(() => {
+                        this.loginUser();
+                    });
+            },
+
+            loginUser() {
+                // Login and redirect
+                Auth.login(this.user.email, this.user.password)
+                    .then(response => {
+                        this.$emit('loggedInUser');
                     })
                     .catch(error => {
-                        // Show error
-                        this.$M.toast({ html: "Error: " + error.response.status + ", " + error.response.data, classes: "red" });
+                        this.loginError = true;
                     });
             }
         }

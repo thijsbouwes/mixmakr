@@ -11,6 +11,12 @@
 |
 */
 
+Route::post('/webhooks/mollie', 'MollieWebhookController@handle')->name('webhooks.mollie');
+Route::get('/orders/{order}/start-payment', 'OrderController@startPayment')->name('order.start-payment');
+
+Route::view('/order/{order}/status', 'index')
+    ->name('order.status');
+
 Route::view('/{vue?}', 'index')
     ->name('index')
     ->where('vue', '[\/\w\.-]*');
