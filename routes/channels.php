@@ -1,5 +1,7 @@
 <?php
 
+use App\Order;
+
 /*
 |--------------------------------------------------------------------------
 | Broadcast Channels
@@ -11,6 +13,6 @@
 |
 */
 
-Broadcast::channel('App.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+Broadcast::channel('order.{order}', function ($user, Order $order) {
+    return $user->id === $order->user_id;
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Drink;
+use App\Events\OrderUpdated;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderDrinkStatus;
 use App\Order;
@@ -69,6 +70,7 @@ class OrderController extends Controller
         }
 
         $order->drinks()->updateExistingPivot($drink->id, $data);
+        event(new OrderUpdated($order));
     }
 
     private function calculatePrice($drinks, $orderedDrinks)

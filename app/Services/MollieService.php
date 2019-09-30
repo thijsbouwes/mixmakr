@@ -13,8 +13,8 @@ class MollieService
                 'currency' => 'EUR',
                 'value'    => (string) number_format($amount, 2)
             ],
-            'webhookUrl'  => 'http://5d0b4cf0.ngrok.io/webhooks/mollie', //route('webhooks.mollie'),
-            'redirectUrl' => "http://5d0b4cf0.ngrok.io/orders/$orderId/status", //route('order.status', ['order' => $orderId]),
+            'webhookUrl'  => 'http://a81a713b.ngrok.io/webhooks/mollie', //route('webhooks.mollie'),
+            'redirectUrl' => "http://a81a713b.ngrok.io/orders/$orderId/status", //route('order.status', ['order' => $orderId]),
             'description' => config('app.name') . " order " . $orderId
         ]);
 

@@ -15,16 +15,15 @@
                 {{ product.name }}
 
                 <span class="absolute text-sm" style="top: 2rem">
-                    <font-awesome-icon icon="cocktail" class="w-full fill-current white mr-1" title="Complete"/>
-                    <font-awesome-icon icon="cocktail" class="w-full fill-current white opacity-50" title="Complete"/>
+                    <font-awesome-icon
+                        v-for="(n,index) in product.pivot.quantity"
+                        :key="index"
+                        icon="cocktail"
+                        class="w-full fill-current white mr-1"
+                        :class="[n > product.pivot.quantity_complete ? 'opacity-50' : '']"
+                        title="Complete"/>
                 </span>
             </span>
-            <!--<span class="w-12 flex items-center">-->
-                <!--{{ product.pivot.quantity }}-->
-            <!--</span>-->
-            <!--<span class="w-24 flex items-center">-->
-                <!--{{ product.pivot.quantity * product.price | formatNumber }}-->
-            <!--</span>-->
             <span class="w-64 block uppercase tracking-wide text-grey-darker text-xs font-bold">
                 <span v-if="product.pivot.status === 'pending'">
                     Pending
@@ -72,6 +71,11 @@
         },
 
         created() {
+            this.$echo.private('order.' +  this.orderId)
+                .listen('updated', (event) => {
+                    console.log(event);
+                });
+
             this.$http.get(ENDPOINTS.ORDERS + '/' + this.orderId)
                 .then(response => {
                     this.order = response.data;

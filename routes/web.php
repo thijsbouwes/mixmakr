@@ -11,6 +11,7 @@
 |
 */
 
+Route::get('/test', 'TestController@show');
 Route::post('/webhooks/mollie', 'MollieWebhookController@handle')->name('webhooks.mollie');
 Route::get('/orders/{order}/start-payment', 'OrderController@startPayment')->name('order.start-payment');
 

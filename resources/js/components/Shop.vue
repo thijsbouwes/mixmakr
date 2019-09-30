@@ -26,7 +26,7 @@
             <div class="w-full md:w-1/2 lg:w-1/4 p-6 flex flex-col flex-grow flex-shrink"
                  v-for="product in products"
             >
-                <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden shadow object-cover">
+                <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden shadow object-cover" @click="addToCart">
                     <div class="">
                         <img class="h-64 w-full" :src="product.image" :alt="product.name" style="object-fit: cover">
                     </div>
@@ -37,7 +37,7 @@
                                 &euro; {{ product.price }}
                             </span>
                         </span>
-                        <div class="flex justify-between items-center">
+                        <div class="hidden justify-between items-center">
                             <button @click="product.quantity--" :disabled="product.quantity <= 0">
                                 <font-awesome-icon icon="minus" class="w-full fill-current white"/>
                             </button>

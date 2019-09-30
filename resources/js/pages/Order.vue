@@ -30,8 +30,8 @@
 
                 <login v-if="step === 0" @loggedInUser="processLoggedInUser"></login>
                 <shop v-show="step === 1" @order="processOrder" @location="processLocation"></shop>
-                <confirmation v-if="step === 2" @back="back" @confirm="confirm" :cart="cart"></confirmation>
-                <order-status v-if="step === 3" :orderId="orderId"></order-status>
+                <!--<confirmation v-if="step === 2" @back="back" @confirm="confirm" :cart="cart"></confirmation>-->
+                <order-status v-if="step === 2" :orderId="orderId"></order-status>
             </div>
         </section>
     </layout>
@@ -54,7 +54,7 @@
                 orderId: null,
                 cart: [],
                 step: 0,
-                steps: ['Login', 'Drinks', 'Confirmation', 'Order status']
+                steps: ['Login', 'Drinks', 'Order status']
             }
         },
 
@@ -74,7 +74,7 @@
         methods: {
             processOrder(products) {
                 this.cart = products;
-                this.step++;
+                this.confirm();
             },
 
             processLocation(location) {
@@ -95,7 +95,8 @@
                 this.$http.post(ENDPOINTS.ORDERS, data)
                     .then(response => {
                         // Redirect
-                        window.location.replace(ENDPOINTS.ORDERS + '/' + response.data.id + '/start-payment')
+                        this.step++;
+                        // window.location.replace(ENDPOINTS.ORDERS + '/' + response.data.id + '/start-payment')
                     })
             },
 
