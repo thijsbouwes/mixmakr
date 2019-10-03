@@ -6,6 +6,7 @@ use App\Drink;
 use App\Events\OrderUpdated;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderStatus;
+use App\Ingredient;
 use App\Order;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
@@ -52,11 +53,11 @@ class OrderController extends Controller
         ]);
 
         // Update stock
-//        $drink->ingredients->map(function (Ingredient $ingredient) {
-//            $ingredient->update([
-//                'amount' => $ingredient->amount - $ingredient->pivot->amount
-//            ]);
-//        });
+        $drink->ingredients->map(function (Ingredient $ingredient) {
+            $ingredient->update([
+                'amount' => $ingredient->amount - $ingredient->pivot->amount
+            ]);
+        });
 
         return $order->load(['user', 'drink']);
     }
