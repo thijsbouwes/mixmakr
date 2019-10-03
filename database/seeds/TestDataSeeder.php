@@ -83,7 +83,7 @@ class TestDataSeeder extends Seeder
         ]);
 
         // Create all liquor shots
-        $bacardiShot = factory(Drink::class)->create(['name' => 'Bacardi Shot', 'image' => '/images/drinks/bacardi.jpg']);
+        $bacardiShot = factory(Drink::class)->create(['name' => 'Bacardi Shot', 'image' => '/images/drinks/bacardi.png']);
         $bacardiShot->ingredients()->sync([
             $bacardi->id  => ['amount' => 2]
         ]);
@@ -93,7 +93,7 @@ class TestDataSeeder extends Seeder
             $belvedere->id  => ['amount' => 2]
         ]);
 
-        $trojkaShot = factory(Drink::class)->create(['name' => 'Trojka Shot', 'image' => '/images/drinks/trojka.jpg']);
+        $trojkaShot = factory(Drink::class)->create(['name' => 'Trojka Shot', 'image' => '/images/drinks/trojka.png']);
         $trojkaShot->ingredients()->sync([
             $trojka->id  => ['amount' => 2]
         ]);
