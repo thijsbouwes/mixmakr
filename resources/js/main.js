@@ -7,10 +7,10 @@ import Echo from "laravel-echo"
 import Pusher from "pusher-js"
 import App from './App';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCheck, faSpinner, faPlus, faMinus, faChevronLeft, faChevronRight, faList, faCocktail } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faSpinner, faPlus, faMinus, faChevronLeft, faChevronRight, faList, faCocktail, faCog, faArrowLeft, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faCheck, faSpinner, faPlus, faMinus, faChevronLeft, faChevronRight, faList, faCocktail);
+library.add(faCheck, faSpinner, faPlus, faMinus, faChevronLeft, faChevronRight, faList, faCocktail, faCog, faArrowLeft, faTimes);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

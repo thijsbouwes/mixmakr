@@ -25,7 +25,7 @@ class UpdateOrderStatus extends FormRequest
     {
         return [
             'message' => 'required|string',
-            'status' => 'in:creating,completed'
+            'status' => 'in:creating,completed,cancelled'
         ];
     }
 }

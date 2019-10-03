@@ -28,7 +28,7 @@ class CreateDrinkIngredientPivotTable extends Migration
                 ->on('drinks')
                 ->onDelete('cascade');
 
-            $table->integer('amount_in_stock');
+            $table->integer('amount');
         });
     }
 

@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 
-class MollieWebhookRequest extends FormRequest
+class IngredientUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +14,7 @@ class MollieWebhookRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->role === User::ADMIN;
     }
 
     /**
@@ -24,7 +25,10 @@ class MollieWebhookRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required'
+            'ingredients' => 'required|array',
+            'ingredients.*.id'  => 'required|numeric|exists:ingredients',
+            'ingredients.*.amount' => 'required|numeric',
+            'ingredients.*.position' => 'required|numeric|min:0|max:4'
         ];
     }
 }

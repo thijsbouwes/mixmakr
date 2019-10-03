@@ -6,11 +6,11 @@ use App\Drink;
 use App\Events\OrderUpdated;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderStatus;
-use App\Ingredient;
 use App\Order;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class OrderController extends Controller
 {
@@ -20,12 +20,18 @@ class OrderController extends Controller
             throw new ModelNotFoundException();
         }
 
-        return $order->load(['user', 'drinks']);
+        return $order->load(['user', 'drink']);
     }
 
     public  function index()
     {
-        return Order::where('status', Order::PENDING)->with(['drink.ingredients'])->get();
+        $orders = Order::where('status', Order::PENDING)->with(['drink.ingredients'])->get();
+        $cancelCurrent = Cache::pull('cancel-order', false);
+
+        return [
+            'orders' => $orders,
+            'cancel-current' => $cancelCurrent
+        ];
     }
 
     public function store(StoreOrderRequest $storeOrderRequest)
@@ -61,6 +67,10 @@ class OrderController extends Controller
 
         if ($status) {
             $order->update(['status' => $status]);
+        }
+
+        if ($status === Order::CANCELLED) {
+            Cache::put('cancel-order', true);
         }
 
         event(new OrderUpdated($order, $orderStatus->get('message')));

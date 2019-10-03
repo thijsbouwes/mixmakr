@@ -5,6 +5,7 @@ export const ENDPOINTS = {
     REGISTER: 'users',
     POPULAR_PRODUCTS: 'popular-drinks',
     DRINKS: 'drinks',
+    INGREDIENTS: 'ingredients',
     ORDERS: 'orders',
     USER: 'users/self'
 };

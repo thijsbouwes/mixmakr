@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '../pages/Home';
+import Settings from '../pages/Settings';
 import NotFound from '../pages/NotFound';
 import Order from '../pages/Order';
 import Auth from '../service/auth-service';
@@ -27,6 +28,18 @@ export const router = new Router({
             path: '/order',
             name: 'Order',
             component: Order
+        },
+        {
+            path: '/order/:id',
+            name: 'Order status',
+            component: Order,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/settings',
+            name: 'Settings',
+            component: Settings,
+            meta: { requiresAuth: true }
         },
         {
             path: '*',

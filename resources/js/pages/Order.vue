@@ -30,7 +30,7 @@
 
                 <login v-if="step === 0" @loggedInUser="processLoggedInUser"></login>
                 <shop v-if="step === 1" @order="processOrder"></shop>
-                <order-status v-if="step === 2" :order="order"></order-status>
+                <order-status v-if="step === 2" :order="order" @orderAgain="orderAgain"></order-status>
             </div>
         </section>
     </layout>
@@ -61,6 +61,12 @@
             }
         },
 
+        created() {
+            if (this.$route.params.id) {
+                this.getOrder(this.$route.params.id)
+            }
+        },
+
         methods: {
             processOrder(product) {
                 this.product = product;
@@ -75,8 +81,20 @@
                 this.$http.post(ENDPOINTS.ORDERS, {drink_id: this.product.id})
                     .then(response => {
                         this.order = response.data;
-                        this.step++;
+                        this.step = 2;
                     })
+            },
+
+            getOrder(orderId) {
+                this.$http.get(ENDPOINTS.ORDERS + '/' + orderId)
+                    .then(response => {
+                        this.order = response.data;
+                        this.step = 2;
+                    })
+            },
+
+            orderAgain() {
+                this.back();
             },
 
             back() {

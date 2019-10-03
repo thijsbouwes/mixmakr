@@ -25,4 +25,7 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('/orders/{order}', 'OrderController@show')->name('orders.show');
     Route::get('/orders', 'OrderController@index')->name('orders.index');
     Route::post('/orders/{order}', 'OrderController@update')->name('orders.drinks.update');
+
+    Route::get('/ingredients', 'IngredientController@index')->name('ingredients.index');
+    Route::post('/ingredients', 'IngredientController@update')->name('ingredients.update');
 });

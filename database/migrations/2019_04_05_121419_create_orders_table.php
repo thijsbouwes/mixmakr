@@ -18,7 +18,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('drink_id');
             $table->decimal('price');
-            $table->enum('status', ['pending', 'creating', 'completed'])->default('pending');
+            $table->enum('status', ['pending', 'creating', 'completed', 'cancelled'])->default('pending');
             $table->timestamps();
 
             $table->foreign('user_id')

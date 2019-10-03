@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     const PENDING = 'pending';
+    const CANCELLED = 'cancelled';
 
     const STATUS = [
         self::PENDING,
+        self::CANCELLED,
         'creating',
-        'completed',
-        'cancelled'
+        'completed'
     ];
 
     protected $fillable = [
