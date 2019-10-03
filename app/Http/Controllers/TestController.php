@@ -9,7 +9,7 @@ class TestController extends Controller
 {
     public function show()
     {
-        $user = User::findorFail(3);
+        $user = User::findorFail(1);
 
         // Creating a token without scopes...
         $token = $user->createToken('Machine token')->accessToken;

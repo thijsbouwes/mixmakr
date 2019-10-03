@@ -17,6 +17,8 @@ class CreateIngredientsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->decimal('liquor_percentage')->nullable();
+            $table->integer('position');
+            $table->integer('amount');
             $table->timestamps();
         });
     }

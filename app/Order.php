@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    const PENDING = 'pending';
+
     const STATUS = [
-        'waiting_for_payment',
-        'pending',
+        self::PENDING,
         'creating',
         'completed',
         'cancelled'
@@ -17,9 +18,8 @@ class Order extends Model
     protected $fillable = [
         'price',
         'status',
-        'machine_id',
         'user_id',
-        'payment_external_id'
+        'drink_id'
     ];
 
     public function user()
@@ -27,18 +27,8 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function machine()
+    public function drink()
     {
-        return $this->belongsTo(Machine::class);
-    }
-
-    public function drinks()
-    {
-        return $this->belongsToMany(Drink::class)
-            ->withPivot([
-                'status',
-                'quantity',
-                'quantity_complete'
-            ]);
+        return $this->belongsTo(Drink::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreOrderRequest extends FormRequest
@@ -13,7 +14,7 @@ class StoreOrderRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->role === User::ADMIN;
     }
 
     /**
@@ -24,10 +25,7 @@ class StoreOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'machine_id'        => 'required|integer|distinct|exists:machines,id',
-            'drinks'            => 'required|array',
-            'drinks.*.id'       => 'required|integer|distinct|exists:drinks,id',
-            'drinks.*.quantity' => 'required|integer|min:1|max:5'
+            'drink_id' => 'required|integer|exists:drinks,id',
         ];
     }
 }

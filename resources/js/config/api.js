@@ -4,7 +4,6 @@ export const ENDPOINTS = {
     LOGIN_REFRESH: 'oauth/token',
     REGISTER: 'users',
     POPULAR_PRODUCTS: 'popular-drinks',
-    MACHINES: 'machines',
     DRINKS: 'drinks',
     ORDERS: 'orders',
     USER: 'users/self'

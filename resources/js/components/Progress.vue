@@ -14,6 +14,10 @@
                         </span>
                         <span v-else class="text-grey-darker text-center w-full">{{ index + 1 }}</span>
                     </div>
+
+                    <div class="text-xs text-center pt-3">
+                        {{ step }}
+                    </div>
                 </div>
 
                 <div v-if="index != (steps.length - 1)" class="w-1/6 align-center items-center align-middle content-center flex">
@@ -24,12 +28,6 @@
             </template>
 
             <div class="flex-1"></div>
-        </div>
-
-        <div class="flex text-xs content-center text-center">
-            <div class="w-1/4" v-for="step in steps">
-                {{ step }}
-            </div>
         </div>
     </div>
 </template>

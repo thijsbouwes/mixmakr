@@ -16,10 +16,9 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('machine_id');
+            $table->unsignedBigInteger('drink_id');
             $table->decimal('price');
-            $table->enum('status', ['waiting_for_payment', 'pending', 'creating', 'completed'])->default('waiting_for_payment');
-            $table->string('payment_external_id')->nullable();
+            $table->enum('status', ['pending', 'creating', 'completed'])->default('pending');
             $table->timestamps();
 
             $table->foreign('user_id')
@@ -27,9 +26,9 @@ class CreateOrdersTable extends Migration
                 ->on('users')
                 ->onDelete('cascade');
 
-            $table->foreign('machine_id')
+            $table->foreign('drink_id')
                 ->references('id')
-                ->on('machines')
+                ->on('drinks')
                 ->onDelete('cascade');
         });
     }

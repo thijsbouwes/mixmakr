@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import { router } from './router';
 import request from './service/request';
+import Auth from "./service/auth-service";
 import moment from 'moment';
 import Echo from "laravel-echo"
 import Pusher from "pusher-js"
@@ -27,6 +28,7 @@ Vue.prototype.$moment = moment;
 Vue.prototype.$echo = new Echo({
     broadcaster: 'pusher',
     key: process.env.MIX_PUSHER_APP_KEY,
+    auth: {headers: { Authorization: Auth.getToken() }},
     cluster: 'eu',
     encrypted: true
 });

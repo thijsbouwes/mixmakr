@@ -6,9 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ingredient extends Model
 {
+    const SODA = 'soda';
+    const LIQUOR = 'liquor';
+
+    protected $appends = [
+        'type'
+    ];
+
     protected $fillable = [
         'name',
-        'liquor_percentage'
+        'liquor_percentage',
+        'position',
+        'amount'
     ];
 
     public function drinks()
@@ -19,12 +28,12 @@ class Ingredient extends Model
             ]);
     }
 
-    public function machines()
+    public function getTypeAttribute()
     {
-        return $this->belongsToMany(Machine::class)
-            ->withPivot([
-                'amount',
-                'position'
-            ]);
+        if ($this->liquor_percentage > 0) {
+            return self::LIQUOR;
+        }
+
+        return self::SODA;
     }
 }

@@ -29,9 +29,8 @@
                 </div>
 
                 <login v-if="step === 0" @loggedInUser="processLoggedInUser"></login>
-                <shop v-show="step === 1" @order="processOrder" @location="processLocation"></shop>
-                <!--<confirmation v-if="step === 2" @back="back" @confirm="confirm" :cart="cart"></confirmation>-->
-                <order-status v-if="step === 2" :orderId="orderId"></order-status>
+                <shop v-if="step === 1" @order="processOrder"></shop>
+                <order-status v-if="step === 2" :order="order"></order-status>
             </div>
         </section>
     </layout>
@@ -41,27 +40,18 @@
     import Login from '../components/Login';
     import Shop from '../components/Shop';
     import OrderStatus from '../components/OrderStatus';
-    import Confirmation from '../components/Confirmation';
     import Layout from "../layouts/Layout";
     import Progress from '../components/Progress';
     import {ENDPOINTS} from "../config/api";
 
     export default {
-        components: {Shop, Layout, Login, Progress, Confirmation, OrderStatus},
+        components: {Shop, Layout, Login, Progress, OrderStatus},
         data() {
             return {
-                location: null,
-                orderId: null,
-                cart: [],
+                order: {},
+                product: {},
                 step: 0,
                 steps: ['Login', 'Drinks', 'Order status']
-            }
-        },
-
-        created() {
-            if (this.$route.params.id) {
-                this.orderId = parseInt(this.$route.params.id);
-                this.step = 3;
             }
         },
 
@@ -72,13 +62,9 @@
         },
 
         methods: {
-            processOrder(products) {
-                this.cart = products;
+            processOrder(product) {
+                this.product = product;
                 this.confirm();
-            },
-
-            processLocation(location) {
-                this.location = location;
             },
 
             processLoggedInUser() {
@@ -86,17 +72,10 @@
             },
 
             confirm() {
-                console.log("redirect to ideal");
-                let data = {
-                    machine_id: this.location,
-                    drinks: this.cart
-                };
-
-                this.$http.post(ENDPOINTS.ORDERS, data)
+                this.$http.post(ENDPOINTS.ORDERS, {drink_id: this.product.id})
                     .then(response => {
-                        // Redirect
+                        this.order = response.data;
                         this.step++;
-                        // window.location.replace(ENDPOINTS.ORDERS + '/' + response.data.id + '/start-payment')
                     })
             },
 

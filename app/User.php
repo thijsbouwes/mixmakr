@@ -11,6 +11,9 @@ class User extends Authenticatable
 {
     use Notifiable, HasApiTokens;
 
+    const ADMIN = 'admin';
+    const CLIENT = 'client';
+
     protected $fillable = [
         'name',
         'date_of_birth',

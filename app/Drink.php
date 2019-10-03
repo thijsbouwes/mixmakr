@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Drink extends Model
 {
+    protected $appends = [
+        'inStock'
+    ];
+
     protected $fillable = [
         'name',
         'image',
@@ -14,12 +18,7 @@ class Drink extends Model
 
     public function orders()
     {
-        return $this->belongsToMany(Order::class)
-            ->withPivot([
-                'status',
-                'quantity',
-                'quantity_complete'
-            ]);
+        return $this->hasMany(Order::class);
     }
 
     public function ingredients()
@@ -28,5 +27,18 @@ class Drink extends Model
             ->withPivot([
                 'amount'
             ]);
+    }
+
+    public function getInStockAttribute()
+    {
+        if ($this->relationLoaded('ingredients') === false) {
+            $this->load('ingredients');
+        }
+
+        $notInStock = $this->ingredients->filter(function($ingredient) {
+            return $ingredient->pivot->amount > $ingredient->amount;
+        });
+
+        return $notInStock->isEmpty();
     }
 }

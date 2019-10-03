@@ -33,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
         };
 
         Passport::routes($callback, ['prefix' => 'api/oauth']);
-        Passport::personalAccessClientId(5);
+        Passport::personalAccessClientId(1);
 
         if (App::environment('local') === false) {
             Passport::tokensExpireIn(now()->addDays(15));

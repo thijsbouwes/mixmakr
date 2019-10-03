@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Login from '../pages/Login';
 import Home from '../pages/Home';
 import NotFound from '../pages/NotFound';
 import Order from '../pages/Order';
@@ -27,12 +26,6 @@ export const router = new Router({
         {
             path: '/order',
             name: 'Order',
-            component: Order
-        },
-        {
-            path: '/order/:id/status',
-            meta: { requiresAuth: false },
-            name: 'Order Status',
             component: Order
         },
         {

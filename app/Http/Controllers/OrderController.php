@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use App\Drink;
 use App\Events\OrderUpdated;
 use App\Http\Requests\StoreOrderRequest;
-use App\Http\Requests\UpdateOrderDrinkStatus;
+use App\Http\Requests\UpdateOrderStatus;
+use App\Ingredient;
 use App\Order;
-use App\Services\MollieService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,64 +20,51 @@ class OrderController extends Controller
             throw new ModelNotFoundException();
         }
 
-        return $order->load(['user', 'machine', 'drinks']);
+        return $order->load(['user', 'drinks']);
+    }
+
+    public  function index()
+    {
+        return Order::where('status', Order::PENDING)->with(['drink.ingredients'])->get();
     }
 
     public function store(StoreOrderRequest $storeOrderRequest)
     {
-        $orderedDrinks = collect($storeOrderRequest->get('drinks'));
-        $drinks        = Drink::whereIn('id', $orderedDrinks->pluck('id')->toArray())->get();
-        $totalPrice    = $this->calculatePrice($drinks, $orderedDrinks);
+        $drink = Drink::with('ingredients')->findOrFail($storeOrderRequest->get('drink_id'));
 
-        $order = Order::create([
-            'machine_id'          => $storeOrderRequest->get('machine_id'),
-            'user_id'             => Auth::user()->id,
-            'price'               => $totalPrice
-        ]);
-
-        $order->drinks()->sync($orderedDrinks->keyBy('id')->map(function ($drink) {
-            return [
-                'quantity' => $drink['quantity']
-            ];
-        })->toArray());
-
-        // Create payment
-        $order->update([
-            'payment_external_id' => MollieService::createPayment($totalPrice, $order->id)
-        ]);
-
-        return $order;
-    }
-
-    public function startPayment(Order $order)
-    {
-        $paymentUrl = MollieService::getPaymentUrl($order->payment_external_id);
-
-        return redirect($paymentUrl, Response::HTTP_SEE_OTHER);
-    }
-
-    public function updateDrinkStatus(UpdateOrderDrinkStatus $orderDrinkStatus, Order $order, Drink $drink)
-    {
-        $status     = $orderDrinkStatus->get('status');
-        $orderDrink = $order->drinks->find($drink->id);
-        $data       = [
-            'status' => $status
-        ];
-
-        if ($status === 'complete' && $orderDrink->pivot->quantity_complete < $orderDrink->pivot->quantity) {
-            $data['quantity_complete'] = $orderDrink->pivot->quantity_complete + 1;
+        // Check if ingredients are in stock
+        if ($drink->inStock === false) {
+            return response()->json(['message' => 'Out of stock'], Response::HTTP_BAD_REQUEST);
         }
 
-        $order->drinks()->updateExistingPivot($drink->id, $data);
-        event(new OrderUpdated($order));
+        // Create order
+        $order = Order::create([
+            'drink_id' => $drink->id,
+            'user_id'  => $storeOrderRequest->user()->id,
+            'price'    => $drink->price,
+            'status'   => Order::PENDING
+        ]);
+
+        // Update stock
+//        $drink->ingredients->map(function (Ingredient $ingredient) {
+//            $ingredient->update([
+//                'amount' => $ingredient->amount - $ingredient->pivot->amount
+//            ]);
+//        });
+
+        return $order->load(['user', 'drink']);
     }
 
-    private function calculatePrice($drinks, $orderedDrinks)
+    public function update(UpdateOrderStatus $orderStatus, Order $order)
     {
-        return $orderedDrinks->reduce(function ($prevTotal, $orderedDrink) use ($drinks) {
-            $drink = $drinks->firstWhere('id', '=', $orderedDrink['id']);
+        $status = $orderStatus->get('status');
 
-            return $prevTotal + $drink->price * $orderedDrink['quantity'];
-        });
+        if ($status) {
+            $order->update(['status' => $status]);
+        }
+
+        event(new OrderUpdated($order, $orderStatus->get('message')));
+
+        return $order;
     }
 }
