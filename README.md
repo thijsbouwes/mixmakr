@@ -1,4 +1,4 @@
-# Sociale controle API
+# MixMakr API
 ## Setup 
 * Clone repo
 * Install composer dependencies `composer install`
