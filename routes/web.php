@@ -11,11 +11,6 @@
 |
 */
 
-Route::get('/test', 'TestController@show');
-
-Route::view('/order/{order}/status', 'index')
-    ->name('order.status');
-
 Route::view('/{vue?}', 'index')
     ->name('index')
     ->where('vue', '[\/\w\.-]*');
