@@ -28,7 +28,7 @@ class IngredientUpdateRequest extends FormRequest
             'ingredients' => 'required|array',
             'ingredients.*.id'  => 'required|numeric|exists:ingredients',
             'ingredients.*.amount' => 'required|numeric',
-            'ingredients.*.position' => 'required|numeric|min:0|max:4'
+            'ingredients.*.position' => 'required|numeric|min:0|max:5'
         ];
     }
 }
