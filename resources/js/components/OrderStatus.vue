@@ -1,7 +1,7 @@
 <template>
     <div class="lg:w-1/2 mx-2">
-        <div class="my-12 text-grey-darker text-center">
-            MixMakr is preparing your order #{{ order.id }}: {{ message }}.<br>
+        <div class="my-12 text-grey-darker text-center text-xl">
+            MixMakr is preparing your order #{{ order.id }}: <span class="font-bold">{{ message }}.</span><br>
         </div>
         <div class="flex justify-between items-center my-5 font-bold text-xl text-grey-darkest">
             <img :src="order.drink.image" class="h-24 w-24 mr-2" style="object-fit: cover">

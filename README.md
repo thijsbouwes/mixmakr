@@ -5,9 +5,9 @@
 * Copy config and generate keys `cp .env.example .env && php artisan key:generate`
 * Run migrations `php artisan migrate --seed`
 * Setup keys for Laravel Passport `php artisan passport:keys`
+* Setup personal client `php artisan passport:client --name="Personal client" --personal`
 * Create a Passport client `php artisan passport:client --name="MixMakr" --password`
 * Run seeder for default constants `php artisan db:seed`
-* Setup personal client `php artisan passport:client --personal`
 
 ## Local development 
 We are using [Laravel valet](https://laravel.com/docs/5.7/valet) for local development.
