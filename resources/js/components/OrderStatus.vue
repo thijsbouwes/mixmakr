@@ -14,7 +14,8 @@
             <span class="w-24 flex items-center">
                 <font-awesome-icon v-if="order.status === 'completed'" icon="check" class="w-full fill-current white" title="Complete"/>
                 <font-awesome-icon v-if="order.status === 'cancelled'" icon="times" class="w-full fill-current white" title="Cancelled"/>
-                <font-awesome-icon v-else icon="spinner" class="w-full fill-current white fa-spin" title="In progress"/>
+                <font-awesome-icon v-if="order.status === 'pending'" icon="spinner" class="w-full fill-current white fa-spin" title="In progress"/>
+                <font-awesome-icon v-if="order.status === 'creating'" icon="spinner" class="w-full fill-current white fa-spin" title="In progress"/>
             </span>
         </div>
         <div class="mt-10 font-bold text-xl text-grey-darkest">
